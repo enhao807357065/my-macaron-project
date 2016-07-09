@@ -1,0 +1,2 @@
+2016/07/09 13:19:35 test.go:22: strconv.ParseInt: parsing "": invalid syntax
+2016/07/09 13:19:55 test.go:22: strconv.ParseInt: parsing "": invalid syntax
