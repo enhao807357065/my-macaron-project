@@ -54,5 +54,5 @@ func main() {
 	log.SetOutput(logFile)
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 
-	m.Run()
+	m.Run(8088)
 }
