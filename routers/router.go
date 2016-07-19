@@ -15,6 +15,5 @@ func RegistAllRouters(ctx *macaron.Macaron) {
 		ctx.Write([]byte("server is running ok!"))
 	})
 
-	ctx.Get("/test", Test)
 	ctx.Get("/test1", Test1)
 }

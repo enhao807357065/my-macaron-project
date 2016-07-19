@@ -4,6 +4,7 @@ import (
 	"adwall/routers"
 	_ "adwall/routers"
 	_ "adwall/util"
+	_ "adwall/services"
 	"flag"
 	"fmt"
 	"github.com/go-macaron/gzip"

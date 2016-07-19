@@ -1,17 +1,15 @@
-package main
+package services
 
 import (
 	_ "github.com/go-sql-driver/mysql" // import your used driver
 	"github.com/go-xorm/xorm"
 	"adwall/util"
 	"adwall/models"
-	"fmt"
 )
 
 var engine *xorm.Engine
 
 func init() {
-	fmt.Println("----------------------------------")
 	var err error
 	engine, err = xorm.NewEngine("mysql", util.GetMysqlUrl())
 
