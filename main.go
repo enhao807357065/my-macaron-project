@@ -1,16 +1,19 @@
 package main
 
 import (
-	_ "adwall/routers"
-	"gopkg.in/macaron.v1"
-	"github.com/go-macaron/gzip"
-	"html/template"
 	"adwall/routers"
-	"runtime"
+	_ "adwall/routers"
+	_ "adwall/util"
 	"flag"
-	"os"
 	"fmt"
+	"github.com/go-macaron/gzip"
+	"gopkg.in/macaron.v1"
+	"html/template"
 	"log"
+	"os"
+	"runtime"
+	"adwall/util"
+	"strconv"
 )
 
 func main() {
@@ -24,26 +27,19 @@ func main() {
 	m.Use(macaron.Static("static"))
 
 	m.Use(macaron.Renderer(macaron.RenderOptions{
-		Funcs:      []template.FuncMap{map[string]interface{}{
+		Funcs: []template.FuncMap{map[string]interface{}{
 			"URLFor": m.URLFor,
 		}},
-		Directory:		"views",
-		Extensions: 		[]string{".tpl", ".html"}, // Specify extensions to load for templates.
-		Charset:         	"UTF-8",     // Sets encoding for json and html content-types. Default is "UTF-8".
-		IndentJSON:      	true,        // Output human readable JSON
-		IndentXML:       	true,        // Output human readable XML
-		HTMLContentType: 	"text/html",
-		Delims: 		macaron.Delims{"{{", "}}"}, // 模板语法分隔符，默认为 ["{{", "}}"]
+		Directory:       "views",
+		Extensions:      []string{".tpl", ".html"}, // Specify extensions to load for templates.
+		Charset:         "UTF-8",                   // Sets encoding for json and html content-types. Default is "UTF-8".
+		IndentJSON:      true,                      // Output human readable JSON
+		IndentXML:       true,                      // Output human readable XML
+		HTMLContentType: "text/html",
+		Delims:          macaron.Delims{"{{", "}}"}, // 模板语法分隔符，默认为 ["{{", "}}"]
 	}))
 
 	routers.RegistAllRouters(m)
-
-	//beego.SetLogger("file", `{"filename":"project.log","level":1,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
-
-	//log := logs.NewLogger(logs.LevelAlert)
-	//log.SetLogger("file", `{"filename":"project.log","level":1,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
-	//log.Async()
-	//log.EnableFuncCallDepth(true)
 
 	//set logfile Stdout
 	logFile, logErr := os.OpenFile("project.log", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0666)
@@ -54,5 +50,6 @@ func main() {
 	log.SetOutput(logFile)
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 
-	m.Run(8088)
+	httpPort, _ := strconv.Atoi(util.GetHttpPort())
+	m.Run(httpPort)
 }
