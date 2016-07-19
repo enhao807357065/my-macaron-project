@@ -3,15 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style type="text/css">
+        #tbl {
+            width: 300px; height: 150px;
+            border: 1px solid #ccc;
+        }
+
+        #tb1 tr {
+            height: 45px;
+        }
+
+        #btn {
+            width: 100%; height: 100%;
+            background-color: #FFA300;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
     <script type="text/javascript" src="../js/jquery.min.js"></script>
     <script type="text/javascript">
-        $(function () {
+        function subForm() {
+            var name = $('#name').val();
+            var age = $('#age').val();
+//            $.post('/post/form', {"name": name, "age": age}, function(data, obj) {
+//                alert(data + "###" + obj);
+//            });
 
-        });
+            $.ajax({
+                type: "POST",
+                url: '/post/form',
+                dataType: "json",
+                data: {"name": name, "age": age},
+                async: false,
+                error: function(XHR,textStatus,errorThrown) {
+                    toastr.error("输入的信息不匹配或您的身份已过期 请重新登录!.", "提示", opts);
+                },
+                success: function(data,textStatus) {
+                    alert(data.res);
+                    alert(data + "##" + textStatus);
+//                    var user = JSON.parse(data);
+//                    if (parseInt(user.c) == 200) {
+//                        toastr.success("修改礼品信息成功!.", "提示", opts);
+//                        setTimeout(function() {
+//                            window.location.reload();
+//                        }, 1000);
+//                    } else
+//                        toastr.error(user.t, "提示", opts);
+                }
+            });
+        }
     </script>
 </head>
 <body>
 <h1>{{.Title}}</h1>
 <h2>{{.user.Name}}</h2>
+<table id="tbl" border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+        <td>姓名：</td>
+        <td><input id="name" name="name" value=""/></td>
+    </tr>
+    <tr>
+        <td>年龄：</td>
+        <td><input id="age" name="age" value="0"/></td>
+    </tr>
+    <tr>
+        <td colspan="2"><button id="btn" onclick="subForm()">提交</button></td>
+    </tr>
+</table>
 </body>
 </html>

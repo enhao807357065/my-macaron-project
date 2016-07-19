@@ -16,4 +16,5 @@ func RegistAllRouters(ctx *macaron.Macaron) {
 	})
 
 	ctx.Get("/test1", Test1)
+	ctx.Post("/post/form", Test2)
 }

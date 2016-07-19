@@ -6,6 +6,7 @@ import (
 	"strings"
 	"adwall/services"
 	"strconv"
+	"fmt"
 )
 
 func Test1(ctx *macaron.Context) {
@@ -25,6 +26,20 @@ func Test1(ctx *macaron.Context) {
 	ctx.Data["user"] = user
 
 	ctx.HTML(http.StatusOK, "test")
+}
+
+func Test2(ctx *macaron.Context) {
+	fmt.Println("Test2------------------------")
+	nameStr := ctx.Req.Request.PostFormValue("name")
+
+	result := map[string]string{}
+	if nameStr == "张飞" {
+		result["res"] = "成功"
+		ctx.JSON(http.StatusOK, result)
+	} else {
+		result["res"] = "失败"
+		ctx.JSON(http.StatusOK, result)
+	}
 }
 
 func UnicodeIndex(str, substr string) int {
