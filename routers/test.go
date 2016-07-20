@@ -7,6 +7,11 @@ import (
 	"adwall/services"
 	"strconv"
 	"fmt"
+	"os"
+	"io"
+	"log"
+	"path"
+	"time"
 )
 
 func Test1(ctx *macaron.Context) {
@@ -54,4 +59,66 @@ func UnicodeIndex(str, substr string) int {
 		result = len(rs)
 	}
 	return result
+}
+
+func UploadFile(ctx *macaron.Context) {
+	file, fh, err := ctx.GetFile("file")
+	shortPath := ""
+	if file != nil && err == nil {
+		defer file.Close()
+		ext := path.Ext(fh.Filename)
+		name := strconv.FormatInt(time.Now().UnixNano(), 36)
+
+		dateDir := time.Now().Format("2006_01_02") + "/"
+		if _, err := os.Stat("upload/" + dateDir); os.IsNotExist(err) { //如果文件夹不存在则创建
+			os.MkdirAll("upload/" + dateDir, 0766)
+		}
+		shortPath = dateDir + name + ext
+		path := "upload/" + shortPath
+
+		write, oe := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0766)
+		if oe != nil {
+			log.Printf("%v", oe.Error())
+			panic(oe)
+		}
+
+		err := PipeAndClose(file, write)
+
+		if err != nil {
+			if err != io.EOF {
+				ctx.Status(500)
+				return
+			}
+		}
+	}
+	result := map[string]string{
+		"path": shortPath,
+	}
+	ctx.JSON(http.StatusOK, result)
+}
+
+func PipeAndClose(in io.ReadCloser, out io.WriteCloser) error {
+	defer func() {
+		in.Close()
+		out.Close()
+	}()
+	return Pipe(in, out)
+}
+
+func Pipe(in io.Reader, out io.Writer) error {
+	buf := make([]byte, 2048)
+	for {
+		n, err := in.Read(buf)
+
+		if n > 0 {
+			_, err = out.Write(buf)
+		}
+		if err != nil {
+			if err != io.EOF {
+				return err
+			}
+			return nil
+		}
+	}
+	return nil
 }

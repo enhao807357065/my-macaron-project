@@ -26,6 +26,7 @@ func main() {
 	m.Use(macaron.Logger())
 	m.Use(gzip.Gziper())
 	m.Use(macaron.Static("static"))
+	m.Use(macaron.Static("upload"))
 
 	m.Use(macaron.Renderer(macaron.RenderOptions{
 		Funcs: []template.FuncMap{map[string]interface{}{
