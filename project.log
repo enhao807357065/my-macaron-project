@@ -15,3 +15,14 @@
 2016/07/20 09:21:54 test.go:73: open ./test/asd.png: The system cannot find the path specified.
 2016/07/20 09:23:23 test.go:73: open ./test/asd.png: The system cannot find the path specified.
 2016/07/20 09:32:23 test.go:84: open upload/asd.png: The system cannot find the path specified.
+2016/07/21 09:59:36 server.go:1775: http: multiple response.WriteHeader calls
+2016/07/21 10:00:46 server.go:1775: http: multiple response.WriteHeader calls
+2016/07/21 10:00:59 server.go:1775: http: multiple response.WriteHeader calls
+2016/07/21 10:01:21 server.go:1775: http: multiple response.WriteHeader calls
+2016/07/21 10:01:33 server.go:1775: http: multiple response.WriteHeader calls
+2016/07/21 10:02:24 server.go:1775: http: multiple response.WriteHeader calls
+2016/07/21 10:03:18 server.go:1775: http: multiple response.WriteHeader calls
+2016/07/21 10:04:41 server.go:1775: http: multiple response.WriteHeader calls
+2016/07/21 10:05:52 server.go:1775: http: multiple response.WriteHeader calls
+2016/07/21 10:21:21 server.go:1775: http: multiple response.WriteHeader calls
+2016/07/21 10:25:30 server.go:1775: http: multiple response.WriteHeader calls

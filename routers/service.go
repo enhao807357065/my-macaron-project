@@ -45,7 +45,7 @@ func UploadFile(ctx *macaron.Context) {
 			}
 		}
 	}
-	result := map[string]string{
+	result := map[string]interface{}{
 		"path": shortPath,
 	}
 	ctx.JSON(http.StatusOK, result)
