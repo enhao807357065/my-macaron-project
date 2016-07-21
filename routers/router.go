@@ -24,6 +24,8 @@ func RegistAllRouters(ctx *macaron.Macaron) {
 	ctx.Group("/service", func() {
 		//文件上传
 		ctx.Post("/upload", UploadFile)
+		//删除文件？
+		ctx.Get("/delete/file/:name", DeleteFiles)
 		//本地生成excel
 		ctx.Get("/local/excel", LocalExcel)
 		//流的形式生成excel下载  不生成excel文件

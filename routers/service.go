@@ -15,6 +15,8 @@ import (
 	"bytes"
 )
 
+const uploadPrefix = "upload/"
+
 func UploadFile(ctx *macaron.Context) {
 	file, fh, err := ctx.GetFile("file")
 	shortPath := ""
@@ -24,11 +26,11 @@ func UploadFile(ctx *macaron.Context) {
 		name := strconv.FormatInt(time.Now().UnixNano(), 36)
 
 		dateDir := time.Now().Format("2006_01_02") + "/"
-		if _, err := os.Stat("upload/" + dateDir); os.IsNotExist(err) { //如果文件夹不存在则创建
-			os.MkdirAll("upload/" + dateDir, 0766)
+		if _, err := os.Stat(uploadPrefix + dateDir); os.IsNotExist(err) { //如果文件夹不存在则创建
+			os.MkdirAll(uploadPrefix + dateDir, 0766)
 		}
 		shortPath = dateDir + name + ext
-		path := "upload/" + shortPath
+		path := uploadPrefix + shortPath
 
 		write, oe := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0766)
 		if oe != nil {
@@ -49,6 +51,24 @@ func UploadFile(ctx *macaron.Context) {
 		"path": shortPath,
 	}
 	ctx.JSON(http.StatusOK, result)
+}
+
+func DeleteFiles(ctx *macaron.Context) {
+	name := ctx.Params("name")
+	path := ctx.Query("path")
+	if len(name) <= 0 {
+		log.Printf("%v", "文件名错误")
+		return
+	}
+
+	err := os.Remove(uploadPrefix + path + "/" + name)
+	fmt.Println("err: ", err)
+	if err != nil {
+		log.Printf("%v", err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, "成功!")
 }
 
 func LocalExcel(ctx *macaron.Context) {
